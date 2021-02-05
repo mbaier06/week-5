@@ -6,7 +6,8 @@
 //    c. extract the json using the .json() function
 //    d. find the array of daily forecast data, loop through it and, insert HTML with each day's forecast using the forecastHTML() function
 // 4. repeat step 2 & 3 for each city button
-// 5. (optional OR skip to step 6) once you notice the repetition, you can refactor to use the querySelectorAll() function to find and loop through each city button and add the event listener and function (step 3)
+// 5. (optional OR skip to step 6) once you notice the repetition, you can refactor to use the querySelectorAll() function to find and loop 
+//    through each city button and add the event listener and function (step 3)
 // 6. add a submit event listener to the form
 //    a. get the user-entered location from the input
 //    b. find the forecast header (use the selector .forecast-header) and modify its innerHTML to `${location} Forecast`
@@ -29,4 +30,25 @@ function forecastHTML(dailyForecast) {
 // All your code can go inside of this event listener ⬇️ ⬇️ ⬇️ ⬇️ ⬇️
 window.addEventListener('DOMContentLoaded', function() {
   // Your code ...
+  
+  let chicago = document.querySelector('#chicago-forecast')
+  chicago.addEventListener('click', async function(event){
+    event.preventDefault()
+    
+    let location = 'Chicago' 
+    document.querySelector('.forecast-header').innerHTML = `${location} forecast`
+    
+    let response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=4498add9fff045f6bb873226212701&q=${location}&days=3`)
+    let json = await response.json()
+    console.log(json)
+    
+    let forecast = json.forecast.forecastday
+    for (i = 0; i < forecast.length; i++) {
+      let dailyForecast = forecast[i]
+      console.log(dailyForecast);
+      document.querySelector('.forecast').insertAdjacentHTML('beforeend', forecastHTML(dailyForecast))
+    }
+
+  })
+
 })

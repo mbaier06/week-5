@@ -7,4 +7,19 @@
 
 window.addEventListener('DOMContentLoaded', function () {
   // let url = 'https://api.coindesk.com/v1/bpi/currentprice/USD.json'
+let form = document.querySelector('.bitcoin-form')
+form.addEventListener('submit', async function(event){ //await fetch needs async function!
+  event.preventDefault()
+  // console.log('submitted')
+  let response = await fetch('https://api.coindesk.com/v1/bpi/currentprice/USD.json') // have to always do await with fetch!
+  console.log(response)
+  let json = await response.json()
+  console.log(json)
+
+  let amount = document.querySelector('#amount').value
+  let rate = json.bpi.USD.rate_float
+  let convertedAmount = amount * rate
+  let outputElement = document.querySelector('.output')
+  outputElement.innerHTML = `Your ${amount} Bitcoin is worth ${convertedAmount}`
+  })
 })
